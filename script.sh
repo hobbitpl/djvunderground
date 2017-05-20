@@ -28,3 +28,26 @@ if [ $numpermini -lt 10 ]
 then
   numpermini=10
 fi
+
+################################################
+
+  # get the last index...
+  ind=${#process_list[@]}
+  ind=$((ind-1))
+
+  # loop through the files array, spawning minidjvu if needed.
+  for x in $(seq  0 $ind)
+  do
+    if [ ! -e xindex_${x}.djvu ]
+    then
+      echo "EXECUTING: minidjvu -dpi 600 -r -l -i ${process_list[x]} xindex_${x}.djvu &"
+      minidjvu -dpi 600 -r -l -i ${process_list[x]} xindex_${x}.djvu &
+    else
+      echo "xindex_${x}.djvu already exists, so skipping."
+    fi
+
+  done
+
+  wait
+
+  
